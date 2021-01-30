@@ -261,7 +261,7 @@ conditions.
 
 ## Programming Paradigms (Another Way)
 
-Object-oriented, concurrent, etc. are not paradigms indendent of the others.
+Object-oriented, concurrent, etc. are not paradigms independent of the others.
 Thus:
 
 ```text
@@ -278,5 +278,5 @@ Thus:
 
 ## A Few Programming Languages
 
-![proglang paradigm examples](./images/proglang-paradigm-examples.png)
+![proglang paradigm examples](../images/proglang-paradigm-examples.png)
 

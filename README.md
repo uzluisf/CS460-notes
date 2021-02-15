@@ -10,6 +10,31 @@
 
 ## Table of Contents
 
+|Lecture Date| Topic | Reading |
+|:-----------|:------|:--------|
+|2021/01/29  | 01: [Introduction](./notes/01-introduction.md) |SEB: Chaps. 1-2|
+|2021/02/05  | 02: [Implementation Methods](./notes/compiler-stages.md) | SEB: 1.7 |
+|2021/02/05  | 03: [Syntax and CFGs](./notes/03-grammars-syntax.md)  | SEB: 3.1-3.3 |
+|2021/02/05  | 04: [Attribute Grammars](./notes/04-attribute-grammars.md) | SEB: 3.1-3.3 |
+<!--
+|| Lexical Analysis, Parsing | SEB: 4 |
+|| Functional Programming | SEB: 15.1-3,15.9-10 |
+|| Intro to Haskell | MER: All, HPF: Chap 1, 3 |
+|| Haskell Types| HPF: Chap 2, 5 |
+|| Lazy Evaluation | HPF: 3.3-3.4 + Lecture |
+|| Lambda Calculus | Lecture |
+|| Intro to Logic Programming| Lecture |
+|| Intro to Prolog | LM: Chap. 1-4 |
+|| Prolog techniques | LM: Chap. 1-4 |
+|| Negation | Lecture |
+|| Alternate Logic Programming Languages | Lecture |
+|| Parallel Languages, Functional/Logic Parallelism, Semaphores & Monitors, CSP & Message, Passing, Automatic Parallelization ||
+|| Presentations ||
+|| Reactive (& Synchronous) Languages ||
+-->
+
+
+<!--
 <div align="center">
     <table style="text-align: left; margin-left: auto; margin-right: auto; width: 90%;" border="1" cellspacing="2" cellpadding="2">
         <tbody>
@@ -39,7 +64,6 @@
                 <td style="vertical-align: top;">Grammars, Syntax<br /></td>
                 <td style="vertical-align: top;">SEB: 3.1-3.3<br /></td>
             </tr>
-            <!--
             <tr>
                 <td style="vertical-align: top;">2021/02/05<br /></td>
                 <td style="vertical-align: top;">Attribute Grammars</td>
@@ -136,9 +160,9 @@
                 <td>Reactive (&amp; Synchronous) Languages</td>
                 <td><br /></td>
             </tr>
-          -->
         </tbody>
     </table>
 </div>
+-->
 
 

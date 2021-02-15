@@ -267,7 +267,7 @@ There are two things to notice here:
 * For a context-free grammar, it really doesn't make much difference in what
   order we expand the variables.
 
-### Parse Trees
+### Parse Trees and Ambiguity
 
 A **parse tree** is a hierarchical syntactic entity which represents the
 structure of the derivation of a terminal string from some non-terminal (not
@@ -434,7 +434,7 @@ essential for an expression that contains either of them.
 
   ```bnf
   <expr> -> <expr> <add_op> <term> | ...
-  <term> -> <term> <mult_op> <factir> | ...
+  <term> -> <term> <mult_op> <factor> | ...
   ```
 
   Unfortunately, left recursion disallows the use of some important syntax
@@ -518,6 +518,27 @@ extensions included in the various versions of EBNF are:
 The brackets, braces, and parentheses in the EBNF extensions are **metasymbols**,
 which means they are notational tools and not terminal symbols in the syntactic
 entities they help describe.
+
+## Attribute Grammars
+
+Context-free grammars (CFGs) allow us to specify the regular expressions that we
+use to create words and other strings for our input string of characters and
+they allow us to parse our programs, however they aren't always useful in
+specifying the meaning of a statement or an expression. 
+
+This is why **attribute grammars** are important; they give us a way to do this
+in a notation that complements BNF and they allow us to specify the semantic
+requirements of the language that we can use together with BNF.
+
+An **attribute grammar** is an extension to a context-free grammar that's used
+to describe features of a programming language that cannot be described in BNF
+or can only be described in BNF with great difficulty. Examples:
+
+* Describing the rules that float variables can be assigned integer values but
+  the reverse is not true is difficult to describe completely in BNF.
+
+* The rule requiring that all variables must be declared before being used is
+  impossible to describe in BNF.
 
 
 

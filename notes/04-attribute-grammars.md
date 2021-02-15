@@ -24,7 +24,7 @@ or can only be described in BNF with great difficulty. Examples:
 The semantics of language can be **static** or **dynamic**. Which we have
 depends on whether the meaning of a program's components changes at runtime.
 
-* The static semantics of a language are indirectly related to the meaning of
+* The **static semantics** of a language are indirectly related to the meaning of
   programs during execution. They're set when the program is compiled and will
   last through the runtime of a program.
 

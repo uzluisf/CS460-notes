@@ -279,7 +279,6 @@ A parse tree for the arithmetic expression grammar is shown down below:
 
 ![arithmetic-expression-ambiguous-grammar-example01.png](../images/arithmetic-expression-ambiguous-grammar-example01.png)
 
-
 This tree is not unique. At the second level of the tree, we could have chosen
 to turn the operator into a `+` instead of a `*`, and to further expand the
 expression on the left, rather than the one on the right as shown in the figure
@@ -292,12 +291,33 @@ string of terminals is said to be an **ambiguous grammar**. Ambiguity turns out
 to be a problem when trying to build a parser: it requires some extra mechanism
 to drive a choice between equally acceptable alternatives. 
 
-When designing the grammar for a programming language, we generally try to find
-one that reflects the internal structure of programs in a way that is useful to
-the rest of the compiler.  One place in which structure is particularly
-important is in arithmetic expressions, where we can use productions to capture
-the  **precedence** and **associativity** of the various operators.
+It's not a multiplicity of derivations that cause ambiguity, but rather the
+existence of two or more parse trees. Thus we say that a CFG `G = (V, T, P, S)`
+is **ambiguous** if there's at least one string/sentence `w` in `T*` for which
+we can find two different parse trees, each with root labeled `S` and yield `w`.
+If each string has at most one parse tree in the grammar, then the grammar is
+**unambiguous**.
 
+### Removing Ambiguity from Grammars
+
+In an ideal world, we could be able to give you an algorithm to remove ambiguity
+from CFGs. However the fact is that there's no algorithm whatsoever that can
+even tell us whether a CFG is ambiguous in the first place. Moreover there are
+context-free languages (CFLs) that have nothing but ambiguous CFGs; for these
+languages, removal of ambiguity is impossible.
+
+For the sorts of constructs that appear in common programming languages, there
+are well-known techniques for eliminating ambiguity. Usually there are two
+causes in a programming language's ambiguity:
+
+1. The precedence of operators is not respected; this is known as **operator
+   precedence**. 
+2. A sequence of identical operators can group either from the left or from the
+   right; this is known as **associativity of operators**. Since addition and
+   multiplication are associative (i.e., `A + (B + C) = (A + B) + C`, `A * (B *
+   C) = (A * B) * C`), it doesn't matter whether we group from the left or the
+   right, but to eliminate ambiguity, we must pick one. The conventional
+   approach is to insist on grouping from the left.
 
 ### Operator Precedence
 
@@ -401,7 +421,7 @@ easily be constructed from the other. Every derivation with an unambiguous
 grammar has a unique parse tree, although that tree can be represented by
 different derivations.
 
-### Associativity
+### Associativity of Operators
 
 Associativity tells us that the operators in most languages group left to right,
 so that `12 / 2 * 3` means `(12 / 2) * 3` rather than `12 / (2 * 3)`. When an
@@ -518,33 +538,4 @@ extensions included in the various versions of EBNF are:
 The brackets, braces, and parentheses in the EBNF extensions are **metasymbols**,
 which means they are notational tools and not terminal symbols in the syntactic
 entities they help describe.
-
-## Attribute Grammars
-
-Context-free grammars (CFGs) allow us to specify the regular expressions that we
-use to create words and other strings for our input string of characters and
-they allow us to parse our programs, however they aren't always useful in
-specifying the meaning of a statement or an expression. 
-
-This is why **attribute grammars** are important; they give us a way to do this
-in a notation that complements BNF and they allow us to specify the semantic
-requirements of the language that we can use together with BNF.
-
-An **attribute grammar** is an extension to a context-free grammar that's used
-to describe features of a programming language that cannot be described in BNF
-or can only be described in BNF with great difficulty. Examples:
-
-* Describing the rules that float variables can be assigned integer values but
-  the reverse is not true is difficult to describe completely in BNF.
-
-* The rule requiring that all variables must be declared before being used is
-  impossible to describe in BNF.
-
-
-
-
-
-
-
-
 

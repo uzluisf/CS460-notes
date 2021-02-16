@@ -24,7 +24,7 @@ higher-level languages.
 
 ## Layered View of a Computer System
 
-![layered-view-computer-system](../images/layered-view-computer-systems.png)
+![Layered view of computer systems.](./images/layered-view-computer-systems.png)
 
 * On top of the **bare machine**, instructions that handle basic operations such
   arithmetic and logic operations are known as **macro-instructions**, which 
@@ -119,7 +119,7 @@ process of compilation and program execution takes place in several phases:
       The executable image is loaded into the computer by a systems program
       known as the **loader**.
 
-![compilation-process-diagram](../images/compilation-process-diagram.png)
+![Compilation process](./images/compilation-process-diagram.png)
 
 ## Pure Interpretation
 
@@ -152,7 +152,7 @@ This software simulation obviously provides a virtual machine for the language.
   Furthermore, the source program may be  stored in a form designed for easy
   access and modification rather than one that provides for minimal size.
 
-![pure-interpretation-process-diagram](../images/pure-interpretation-process-diagram.png)
+![Pure interpretation process](./images/pure-interpretation-process-diagram.png)
 
 ## Hybrid Implementation
 
@@ -163,7 +163,7 @@ interpretation because the source language statements are decoded only once.
 Instead of translating intermediate language code to machine code, it simply
 interprets the intermediate code.
 
-![hybrid-impl-process-diagram](../images/hybrid-impl-process-diagram.png)
+![Hybrid implementation process](./images/hybrid-impl-process-diagram.png)
 
 **Examples:**
 

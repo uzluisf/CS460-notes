@@ -33,7 +33,6 @@
 || Reactive (& Synchronous) Languages ||
 -->
 
-
 <!--
 <div align="center">
     <table style="text-align: left; margin-left: auto; margin-right: auto; width: 90%;" border="1" cellspacing="2" cellpadding="2">

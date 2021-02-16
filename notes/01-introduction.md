@@ -278,5 +278,5 @@ Thus:
 
 ## A Few Programming Languages
 
-![proglang paradigm examples](../images/proglang-paradigm-examples.png)
+![Examples of programming languages and the paradigms they fit in.](./images/proglang-paradigm-examples.png)
 

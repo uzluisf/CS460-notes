@@ -57,12 +57,12 @@ depends on whether the meaning of a program's components changes at runtime.
 
 An attribute grammar is a grammar with the following added features:
 
-* Each symbol `X` in the grammar has a set of attributes `A(X)`.
+* Each symbol $X$ in the grammar has a set of attributes $A(X)$.
 
-* The set `A(X)` has two **disjoint** sets:
-  * `S(X)` is a set of **synthetized attributes**, which are used to pass
+* The set $A(X)$ has two **disjoint** sets:
+  * $S(X)$ is a set of **synthetized attributes**, which are used to pass
     semantic information up a parse tree from child to parent.
-  * `I(X)` is a set of **inherited attributes**, that also pass semantic
+  * $I(X)$ is a set of **inherited attributes**, that also pass semantic
     information but does it down and across a parse tree from parent to child.
 
 * Each production of the grammar has a set of semantic functions and a set of
@@ -80,7 +80,7 @@ This example illustrates how an attribute grammar can be used to check the type
 rules of a simple assignment statement. The syntax and static semantics of
 this assignment statement are as follows: 
 
-* The only variable names are `A`, `B`, and `C`.
+* The only variable names are $A$, $B$, and $C$.
 * The right side of the assignments can be either a variable or an expression in
   the form of a variable added to another variable. 
 * The variables can be one of two types: `int` or `real`.
@@ -97,11 +97,13 @@ this assignment statement are as follows:
 
 The syntax portion of our example attribute grammar is
 
-```bnf
-<assign> -> <var> = <expr>
-<expr>   -> <var> + <var> | <var>
-<var>    -> A | B | C
-```
+\begin{grammar}
+<assign> $\rightarrow$ <var> = <expr>
+
+<expr>   $\rightarrow$ <var> + <var> | <var>
+
+<var>    $\rightarrow$ A | B | C
+\end{grammar}
 
 The attributes for the nonterminals in the example attribute grammar are
 described in the following paragraphs:
@@ -125,7 +127,9 @@ The attribute gramma is as follows:
      Semantic rule: `<expr>.expected_value <- <var>.actual_type`
 2.  Syntax rule: `<expr> -> <var>[2] + <var>[3]`
 	([2] and [3] differentiate the three `<var>` nonterminals)
+
 	Semantic rule:
+
 	```
     <expr>.actual_type <-
 		  if <var>[2].actual_type == int) and <var>[3].actual_type == int) then
@@ -133,13 +137,18 @@ The attribute gramma is as follows:
 		  else
 			  real
     ```
+
 	**Predicate:** `<expr>.actual_type == <expr>.expected_type`
+
 3.  Syntax rule:  `<expr> -> <var>`
-     Semantic rule: `<expr>.actual_type <- <var>.actual_type `
-     **Predicate:** `<expr>.actual_type == <expr>.expected_type`
+
+    Semantic rule: `<expr>.actual_type <- <var>.actual_type `
+
+    **Predicate:** `<expr>.actual_type == <expr>.expected_type`
 
 4. Syntax rule:  `<var> -> A | B | C`
-    Semantic rule: `<var>.actual_type <- lookup (<var>.string)`
+
+   Semantic rule: `<var>.actual_type <- lookup(<var>.string)`
 
 The `look-up` function looks up a given variable name in the symbol table and returns the variable’s type.
 
@@ -172,12 +181,12 @@ For `A = B + C`. Initially, there are only intrinsic attributes on the leaves.
 The parse tree down below shows the flow of attribute values. Solid lines show
 the parse tree; dashed lines show attribute flow in the tree.
 
-![flow-of-attributes-in-parse-tree-example01.png](../images/flow-of-attributes-in-parse-tree-example01.png)
+![Flow of attributes in parse tree of $A = A + B$.](./images/flow-of-attributes-in-parse-tree-example01.png)
 
 The following parse tree shows the final attribute values on the nodes. In this
 example, A is defined as a `real` and B is defined as an `int`.
 
-![flow-of-attributes-in-fully-attributed-parse-tree-example01.png](../images/flow-of-attributes-in-fully-attributed-parse-tree-example01.png)
+![Flow of attributes in fully attributed parse tree of $A = A + B$.](./images/flow-of-attributes-in-fully-attributed-parse-tree-example01.png)
 
 Determining attribute evaluation order for the general case of an attribute
 grammar is a complex problem, requiring the construction of a dependency graph

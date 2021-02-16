@@ -1,0 +1,226 @@
+%
+% This template is based on https://github.com/jez/latex-homework-class
+% https://latexref.xyz/_005c_0040ifstar.html
+%
+
+\documentclass{article}
+
+% ----- Packages --------------------------------------------------------------
+$if(geometry)$
+\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$else$
+\usepackage[left=4cm,right=4cm]{geometry}
+$endif$
+
+% Better fonts with accents
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc} % input encoding UTF-8
+% \usepackage{ifthen}
+% \usepackage{framed}
+
+$if(fontfamily)$
+\usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
+$else$
+\usepackage{tgschola}
+$endif$
+
+% Math symbols
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{centernot}
+
+% Nice lists
+\usepackage{enumerate}
+% \usepackage[shortlabels]{enumitem}
+
+% Nice images, figures, and listings
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{grffile}
+
+% PDF stuff
+\usepackage[bookmarks=true,unicode=true,pdfstartview={FitV},hidelinks,pdfusetitle]{hyperref}
+\usepackage[all]{hypcap}
+\newcommand{\inlref}[2]{\hyperref[#2]{#1~\ref*{#2}}}
+
+% Header & Page Setup
+\usepackage{fancyhdr}
+$if(largemargins)$
+%\usepackage{fullpage}
+$endif$
+
+% Mainly for grammar environment
+\usepackage{syntax}
+\setlength{\grammarparsep}{2.5pt plus 1pt minus 1pt}
+\setlength{\grammarindent}{10em}
+
+% Links
+
+$if(links-as-notes)$
+% Make links footnotes instead of hotlinks:
+\DeclareRobustCommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+
+% ----- Page Setup ------------------------------------------------------------
+
+% Use block style paragraphs
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+% ----- Title & Header --------------------------------------------------------
+
+\newcommand{\mdate}{$if(date)$$date$$else$\today$endif$}
+\newcommand{\mauthor}{$for(author)$$author$$sep$, $endfor$}
+
+\pagestyle{empty}
+\pagestyle{fancy}
+
+$if(header-own-page)$
+ \renewcommand{\maketitle}[0]{%
+   % Make all pages plain, thus no headers
+   \pagestyle{plain}
+
+   % Put header on its own page
+   \begin{center}
+     {\Large $course$ $type$\#$num$}
+
+      $student$
+    
+      $professor$
+
+      \mdate
+   \end{center}
+
+   \renewcommand{\headrulewidth}{0.4pt}
+   \newpage
+ }
+$else$
+  \renewcommand{\maketitle}[0]{%
+    % Setup header
+    \setlength{\headheight}{5.2pt}
+    \setlength{\headsep}{0.2in}
+    \lhead{$student$}%
+    \chead{$course$ $type$\#$num$}%
+    \rhead{\mdate}%
+
+    % Setup hrule in header
+    \renewcommand{\headrulewidth}{0pt}
+    \headrule{}
+
+    % Don't put header on first page
+    \thispagestyle{plain}
+
+     % Put header on its own page
+     \begin{center}
+      {\Large $course$ $type$\#$num$}
+
+       $student$
+     
+       $professor$
+
+       \mdate
+      \end{center}
+
+    \renewcommand{\headrulewidth}{0.4pt}
+  }
+$endif$
+
+% ----- Questions -------------------------------------------------------------
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+% Prefix for questions
+\newcommand{\questiontype}[0]{Question}
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}[0]{0}
+
+\makeatletter
+% Numbered question
+\newcommand*{\question@unstarred}[0]{
+    % Emit \newpage if option `newpage` is present
+    $if(newpage)$
+    \newpage
+    $endif$
+    
+    % Wrap in minipage so that we don't get a line break enywhere in between
+    \begin{minipage}{\linewidth}%
+      \stepcounter{questionCounter}%
+        \vspace{.2in}%
+        \ifx\writtensection\undefined{}
+          \noindent{\bf \questiontype\ \arabic{questionCounter}.}%
+          \else
+            \if\writtensection0
+            \noindent{\bf \questiontype\ \arabic{questionCounter}.}%
+            \else
+            \noindent{\bf \questiontype\ \writtensection.\arabic{questionCounter}}%
+          \fi
+        \vspace{0.3em} \hrule \vspace{.1in}%
+    \end{minipage}
+}
+% Name question
+\newcommand*{\question@starred}[1]{
+    % Emit \newpage if option `newpage` is present
+    $if(newpage)$
+    \newpage
+    $endif$
+
+    % Wrap in minipage so that we don't get a line break enywhere in between
+    \begin{minipage}{\linewidth}%
+      \addtocounter{questionCounter}{1}%
+      \setcounter{partCounter}{0}%
+      \vspace{.2in}%
+      \noindent{\bf \arabic{questionCounter}. #1}%
+      \vspace{0.3em} \hrule \vspace{.1in}%
+    \end{minipage}
+}
+\newcommand*{\question}{\@ifstar{\question@starred}{\question@unstarred}}
+\makeatother
+
+% Override normal section definitions
+\renewcommand{\section}[0]{\question}
+%\WithSuffix\newcommand\section*[1]{\question*{#1}}
+
+% ----- Question Parts --------------------------------------------------------
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]%
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]%
+}{\end{enumerate}}
+
+\newcommand{\questionpart}[0]{\item}
+
+% ----- Answer Box ------------------------------------------------------------
+
+% \newcommand{\answerbox}[1]{%
+% \begin{framed}
+% \vspace{#1}
+% \end{framed}}
+
+% ----- Document ---------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+% Space before `align`s
+\setlength{\abovedisplayskip}{-.7em}
+\setlength{\abovedisplayshortskip}{-.7em}
+
+$body$
+
+\end{document}
+
+

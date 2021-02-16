@@ -1,4 +1,4 @@
-# Syntax
+# Syntax and Grammars
 
 The task of providing a concise yet understandable description of a programming
 language is difficult but essential to a language’s success:
@@ -70,7 +70,7 @@ In general, languages can be formally defined in two distinct ways:
 
 * **Recognition:** Given an arbitrary sentence, determine whether it's legal in
   some given language. For example, a compiler's syntax analyzer is a
-  *recognition device* that determines if a given sentence (e.g., whole
+  **recognition device** that determines if a given sentence (e.g., whole
   programs) is a legal sentence in whatever language the compiler translates to.
   Such devices are like filters, separating legal sentences from those that are
   incorrectly formed.
@@ -109,35 +109,35 @@ Remember that pushdown automatas (PDAs) have only one stack.
 
 Typically represented using Backus-Naur Form (BNF) which is equivalent to CFG.
 
-Formally, a CFG <Σ, V, P> where
+Formally, a CFG $<\Sigma, V, P>$ where
 
-* Σ is a set of **terminal symbols** (e.g., lexemes and tokens),
-* V is a set of **nonterminal symbols** (aka variables), containing a start
-  symbol S,
-* P is a finite non-empty set of **rules** (or **productions**), each of the
+* $\Sigma$ is a set of **terminal symbols** (e.g., lexemes and tokens),
+* $V$ is a set of **nonterminal symbols** (aka variables), containing a start
+  symbol $S$,
+* $P$ is a finite non-empty set of **rules** (or **productions**), each of the
   form:
   
-  * A -> ɑ, where A is a single nonterminal symbol, and ɑ is a finite sequence
-  of terminals and/or nonterminals,
-  * A belongs to V,
+  * $A \rightarrow \alpha$, where $A$ is a single nonterminal symbol, and
+    $\alpha$ is a finite sequence of terminals and/or nonterminals,
+  * $A$ belongs to $V$,
   * each nonterminal has at least one production, and
-  * at least one production has S on its left-hand side (LHS).
+  * at least one production has $S$ on its left-hand side (LHS).
 
 ### BNF Notation and Abbreviations
 
 BNF uses abstractions for syntactic structures. For example, a simple Java
 assignment might represented by the following abstraction:
 
-```bnf
-<assign> -> <var> = <expression>
-```
+\begin{grammar}
+<assign> $\rightarrow$ <var> = <expression>
+\end{grammar}
 
 | Abstraction | Meaning |
 |:------------|:--------|
 | `<assign>` | This is the abstraction being defined; this is usually known as the **left-hand side** (LHS). |
 | `<var> = <expression>` | This is the definition of the LHS; it's usually known as the **right-hand side** (RHS).|
-|`->`|The arrow means "can have the form"; for brevity it's sometimes pronounced "goes to".|
-|`<assign> -> <var> = <expression>`| This whole definition is called a **rule** (or **production**). |
+|$\rightarrow$|The arrow means "can have the form"; for brevity it's sometimes pronounced "goes to".|
+|`<assign>` $\rightarrow$ `<var> = <expression>`| This whole definition is called a **rule** (or **production**). |
 
 One example sentence whose syntactic structure is described by the rule is
 
@@ -157,10 +157,11 @@ Nonterminal symbols can have two or more distinct definitions, representing two
 or more possible syntactic forms in the language. For example, a Java `if`
 statement can be described with the rules:
 
-```bnf
-<if_stmt> -> if ( <logic_expr> ) <stmt>
-<if_stmt> -> if ( <logic_expr> ) <stmt> else <stmt>
-```
+\begin{grammar}
+<if_stmt> $\rightarrow$ if ( <logic_expr> ) <stmt>
+
+<if_stmt> $\rightarrow$ if ( <logic_expr> ) <stmt> else <stmt>
+\end{grammar}
 
 Multiple definitions can be written as a single rule, with the different
 definitions separated by the symbol `|`, meaning logical OR. Thus, the above
@@ -172,10 +173,18 @@ description is the same as
 
 The following CFG describes the structure of an arithmetic expression:
 
-```bnf
-<expr> -> <id> | <number> | - <expr> | ( <expr> ) | <expr> op <expr> 
-<op>   -> + | - | * | /
-```
+\begin{grammar}
+<expr> $\rightarrow$ <id> 
+\alt <number> 
+\alt - <expr> 
+\alt ( <expr> )
+\alt <expr> op <expr> 
+
+<op>   $\rightarrow$ +
+\alt -
+\alt * 
+\alt /
+\end{grammar}
 
 Regular expressions work well for defining tokens, however they are unable to
 specify nested constructs, which are central to programming languages. On the
@@ -185,12 +194,14 @@ a recursive rule.
 
 #### Describing Lists
 
-Variable-length lists in mathematics are often written using an ellipsis (`...`); `1, 2, . . .` is an example. They can be defined recursively and thus a CFG can
-describe them in the following manner:
+Variable-length lists in mathematics are often written using an ellipsis
+($\ldots$); $1, 2, \ldots$ is such an example. They can be defined recursively
+and thus a CFG can describe them in the following manner:
 
-```
-<id_list> -> id | id, <id_list> 
-```
+\begin{grammar}
+<id_list> $\rightarrow$ id
+\alt id, <id_list> 
+\end{grammar}
 
 This defines `<id_list>` as either a single token (`id`) or an identifier
 followed by a comma and another instance `<id_list>`. 
@@ -206,21 +217,21 @@ string of terminals:
 > of P. Repeat this process until no nonterminals remain.
 
 As an example, we can use the grammar for arithmetic expression to generate the
-string `slope * x + intercept`:
+string $slope * x + intercept$:
 
-```
-<expr> => <expr> <op> <expr>
-	   => <id> <op> <expr>
-	   => slope <op> <expr>
-	   => slope * <expr>
-	   => slope * <expr> + <expr>
-	   => slope * <id> + <expr>
-	   => slope * x + <expr>
-	   => slope * x + <id>
-	   => slope * x + intercept
-```
+\begin{grammar}
+<expr> $\Rightarrow$ <expr> <op> <expr> \\
+	   $\Rightarrow$ <id> <op> <expr> \\
+	   $\Rightarrow$ slope <op> <expr> \\
+	   $\Rightarrow$ slope * <expr> \\
+	   $\Rightarrow$ slope * <expr> + <expr> \\
+	   $\Rightarrow$ slope * <id> + <expr> \\
+	   $\Rightarrow$ slope * x + <expr> \\
+	   $\Rightarrow$ slope * x + <id> \\
+	   $\Rightarrow$ slope * x + intercept \\
+\end{grammar}
 
-The `=>` metasymbol is often pronounced “derives.” It indicates that the
+The $\Rightarrow$ metasymbol is often pronounced “derives.” It indicates that the
 right-hand side was obtained by using a production to replace some nonterminal
 in the left-hand side. 
 
@@ -229,40 +240,41 @@ in the left-hand side.
 * Each string of symbols along the way is called a **sentential form**. 
 * The **final sentential form**, consisting of only terminals, is called the
   **yield** of the derivation. 
-* We sometimes elide the intermediate steps and write `expr =>* slope * x +
-  intercept `, where the metasymbol `=>*` means “derives after zero or more
+* We sometimes elide the intermediate steps and write $expr \Rightarrow^{*} slope * x +
+  intercept$, where the metasymbol $\Rightarrow^{*}$ means “derives after zero or more
   replacements.” 
 
 Different replacement strategies leads to different derivations:
 
 * **Leftmost derivation.** In this type of derivation, at each step of the
-  derivation   the left-most nonterminal with the left-hand side of some
-  production. This is the strategy used to generate the string `slope * x +
-  intercept` in the example above.
+  derivation the left-most nonterminal with the left-hand side of some
+  production. This is the strategy used to generate the string
+  $slope * x + intercept$ in the example above.
 
 * **Rightmost derivation.** In this type of derivation, at each step of the
-  derivation   the right-most nonterminal with the right-hand side of some
+  derivation the right-most nonterminal with the right-hand side of some
   production.
 
 * **Others.** There are many other possible derivations, which includes options
-  between a leftmost and rightmost derivation. .
+  between a leftmost and rightmost derivation.
 
-The rightmost derivation to  generate the string `slope * x + intercept` is as
+The rightmost derivation to  generate the string $slope * x + intercept$ is as
 follows:
 
-```
-<expr> => <expr> <op> <expr>
-	   => <expr> <op> <id>
-	   => <expr> <op> intercept
-	   => <expr> + intercept
-	   => <expr> * <expr> + intercept
-	   => <expr> * <id> + intercept
-	   => <expr> * x + intercept
-	   => <id> * x + intercept
-	   => slope * x + intercept
-```
+\begin{grammar}
+<expr> $\Rightarrow$ <expr> <op> <expr> \\
+	   $\Rightarrow$ <expr> <op> <id> \\
+	   $\Rightarrow$ <expr> <op> intercept \\
+	   $\Rightarrow$ <expr> + intercept \\
+	   $\Rightarrow$ <expr> * <expr> + intercept \\
+	   $\Rightarrow$ <expr> * <id> + intercept \\
+	   $\Rightarrow$ <expr> * x + intercept \\
+	   $\Rightarrow$ <id> * x + intercept \\
+	   $\Rightarrow$ slope * x + intercept \\
+\end{grammar}
 
 There are two things to notice here:
+
 * Different derivations result in quite different sentential forms, but
 * For a context-free grammar, it really doesn't make much difference in what
   order we expand the variables.
@@ -277,26 +289,27 @@ with its children, represents the use of a production.
 
 A parse tree for the arithmetic expression grammar is shown down below:
 
-![arithmetic-expression-ambiguous-grammar-example01.png](../images/arithmetic-expression-ambiguous-grammar-example01.png)
+![Parse tree for $slope * x + intercept$ using ambiguous grammar.](./images/arithmetic-expression-ambiguous-grammar-example01.png)
 
 This tree is not unique. At the second level of the tree, we could have chosen
 to turn the operator into a `+` instead of a `*`, and to further expand the
 expression on the left, rather than the one on the right as shown in the figure
 below:
 
-![arithmetic-expression-ambiguous-grammar-example02.png](../images/arithmetic-expression-ambiguous-grammar-example02.png)
+![Parse tree for $slope * x + intercept$ using ambiguous grammar (alternative).](./images/arithmetic-expression-ambiguous-grammar-example02.png)
+
+Ambiguity turns out to be a problem when trying to build a parser: it requires
+some extra mechanism to drive a choice between equally acceptable alternatives.
 
 A grammar that allows the construction of more than one parse tree for some
-string of terminals is said to be an **ambiguous grammar**. Ambiguity turns out
-to be a problem when trying to build a parser: it requires some extra mechanism
-to drive a choice between equally acceptable alternatives. 
+string of terminals is said to be an **ambiguous grammar**. Formally a
+CFG $G = (V, T, P, S)$ is **ambiguous** if there's at least one string/sentence
+$w$ in $T^{*}$ for which we can find two different parse trees, each with root
+labeled $S$ and yield $w$. If each string has at most one parse tree in the
+grammar, then the grammar is **unambiguous**.
 
-It's not a multiplicity of derivations that cause ambiguity, but rather the
-existence of two or more parse trees. Thus we say that a CFG `G = (V, T, P, S)`
-is **ambiguous** if there's at least one string/sentence `w` in `T*` for which
-we can find two different parse trees, each with root labeled `S` and yield `w`.
-If each string has at most one parse tree in the grammar, then the grammar is
-**unambiguous**.
+Thus it's not a multiplicity of derivations that cause ambiguity, but rather the
+existence of two or more parse trees.
 
 ### Removing Ambiguity from Grammars
 
@@ -314,17 +327,17 @@ causes in a programming language's ambiguity:
    precedence**. 
 2. A sequence of identical operators can group either from the left or from the
    right; this is known as **associativity of operators**. Since addition and
-   multiplication are associative (i.e., `A + (B + C) = (A + B) + C`, `A * (B *
-   C) = (A * B) * C`), it doesn't matter whether we group from the left or the
+   multiplication are associative (i.e., $A + (B + C) = (A + B) + C$, $A * (B *
+   C) = (A * B) * C$), it doesn't matter whether we group from the left or the
    right, but to eliminate ambiguity, we must pick one. The conventional
    approach is to insist on grouping from the left.
 
 ### Operator Precedence
 
 Precedence tells us that multiplication and division in most languages group
-more tightly than addition and subtraction, so that 3 + 4 * 5 means 3 + (4 * 5)
-rather than (3 + 4) * 5 . (Note that these rules are not universal). Thus, if *
-has been assigned **higher precedence** than + (by the language designer),
+more tightly than addition and subtraction, so that $3 + 4 * 5$ means $3 + (4 * 5)$
+rather than $(3 + 4) * 5$. (Note that these rules are not universal). Thus, if $*$
+has been assigned **higher precedence** than $+$ (by the language designer),
 multiplication will be done first, regardless of the order of appearance of the
 two operators in the expression.
 
@@ -332,7 +345,7 @@ The fact that an operator in an arithmetic expression is generated lower in the
 parse tree (and therefore must be evaluated first) can be used to indicate that
 it has precedence over an operator produced higher up in the tree. 
 
-In one of the parse tree for `slope * x + intercept`, the multiplication
+In one of the parse tree for $slope * x + intercept$, the multiplication
 operator is generated lower in the tree, which could indicate that it has
 precedence over the addition operator in the expression. Its other parse tree,
 however, indicates just the opposite. It appears, therefore, that the two
@@ -362,59 +375,71 @@ precedence. This requires additional nonterminals and some new rules:
 
 The revised grammar for arithmetic expressions is as follows:
 
-```bnf
-<expr>    -> <term> | <expr> <add_op> <term>
-<term>    -> <factor> | <term> <mult_op> <factor>
-<factor>  -> <id> | <number> | - <factor> | ( <expr> )
-<add_op>  -> + | -
-<mult_op> -> * | /
-```
+\begin{grammar}
+<expr>    $\rightarrow$ <term>
+\alt <expr> <add_op> <term>
+
+<term>    $\rightarrow$ <factor>
+\alt <term> <mult_op> <factor>
+
+<factor>  $\rightarrow$ <id>
+\alt <number> 
+\alt - <factor>
+\alt ( <expr> )
+
+<add_op>  $\rightarrow$ + 
+\alt -
+
+<mult_op> $\rightarrow$ * 
+\alt /
+\end{grammar}
 
 This new grammar generates the same language as the previous one, but it is
 unambiguous and it specifies the usual precedence order of multiplication and
-addition operators. The leftmost and rightmost derivations for `slope * x +
-intercept` are the following respectively:
+addition operators. The leftmost and rightmost derivations for
+$slope * x + intercept$ are the following respectively:
 
-**Leftmost derivation:**
+Leftmost derivation of $slope * x + intercept$:
 
-```bnf
-<expr> => <expr> <add_op> <term>
-	   => <term> <add_op> <term>
-	   => <term> <mult_op> <factor> <add_op> <term>
-	   => <factor> <mult_op> <factor> <add_op> <term>
-	   => <id> <mult_op> <factor> <add_op> <term>
-	   => slope <mult_op> <factor> <add_op> <term>
-	   => slope * <factor> <add_op> <term>
-	   => slope * <id> <add_op> <term>
-	   => slope * x <add_op> <term>
-	   => slope * x + <term>
-	   => slope * x + <factor>
-	   => slope * x + <id>
-	   => slope * x + intercept
-```
+\begin{grammar}
+<expr> $\Rightarrow$ <expr> <add_op> <term> \\
+       $\Rightarrow$ <term> <add_op> <term> \\
+       $\Rightarrow$ <term> <mult_op> <factor> <add_op> <term> \\
+       $\Rightarrow$ <factor> <mult_op> <factor> <add_op> <term> \\
+       $\Rightarrow$ <id> <mult_op> <factor> <add_op> <term> \\
+       $\Rightarrow$ slope <mult_op> <factor> <add_op> <term> \\
+       $\Rightarrow$ slope * <factor> <add_op> <term> \\
+       $\Rightarrow$ slope * <id> <add_op> <term> \\
+       $\Rightarrow$ slope * x <add_op> <term> \\
+       $\Rightarrow$ slope * x + <term> \\
+       $\Rightarrow$ slope * x + <factor> \\
+       $\Rightarrow$ slope * x + <id> \\
+       $\Rightarrow$ slope * x + intercept \\
+\end{grammar}
 
-* **Rightmost derivation**
+Rightmost derivation of $slope * x + intercept$:
 
-```bnf
-<expr> => <expr> <add_op> <term>
-	   => <expr> <add_op> <factor>
-	   => <expr> <add_op> <id>
-	   => <expr> <add_op> intercept
-	   => <expr> + intercept
-	   => <term> + intercept
-	   => <term> <mult_op> <factor> + intercept
-	   => <term> <mult_op> <id> + intercept
-	   => <term> <mult_op> x + intercept
-	   => <term> * x + intercept
-	   => <factor> * x + intercept
-	   => <id> * x + intercept
-	   => slope * x + intercept
-```
+\begin{grammar}
+<expr> $\Rightarrow$ <expr> <add_op> <term> \\
+	   $\Rightarrow$ <expr> <add_op> <factor> \\
+	   $\Rightarrow$ <expr> <add_op> <id> \\
+	   $\Rightarrow$ <expr> <add_op> intercept \\
+	   $\Rightarrow$ <expr> + intercept \\
+	   $\Rightarrow$ <term> + intercept \\
+	   $\Rightarrow$ <term> <mult_op> <factor> + intercept \\
+	   $\Rightarrow$ <term> <mult_op> <id> + intercept \\
+	   $\Rightarrow$ <term> <mult_op> x + intercept \\
+	   $\Rightarrow$ <term> * x + intercept \\
+	   $\Rightarrow$ <factor> * x + intercept \\
+	   $\Rightarrow$ <id> * x + intercept \\
+	   $\Rightarrow$ slope * x + intercept \\
+\end{grammar}
+
 
 The unique parse tree for this string using the unambiguous grammar is shown
 down below:
 
-![arithmetic-expression-unambiguous-grammar-example03.png](../images/arithmetic-expression-unambiguous-grammar-example03.png)
+![Parse tree for $slope * x + intercept$ using unambiguous grammar.](./images/arithmetic-expression-unambiguous-grammar-example03.png)
 
 The connection between parse trees and derivations is very close: Either can
 easily be constructed from the other. Every derivation with an unambiguous
@@ -424,22 +449,22 @@ different derivations.
 ### Associativity of Operators
 
 Associativity tells us that the operators in most languages group left to right,
-so that `12 / 2 * 3` means `(12 / 2) * 3` rather than `12 / (2 * 3)`. When an
-expression includes two operators that have the same precedence (as `*` and `/`
+so that $12 / 2 * 3$ means $(12 / 2) * 3$ rather than $12 / (2 * 3)$. When an
+expression includes two operators that have the same precedence (as $*$ and $/$
 usually have), **associativity** is the semantic rule that specifies which should
 have precedence. An expression with two occurrences of the same operator has the
-same issue; for example `12 / 2 / 3`, i.e., `(12 / 2) / 3` vs. `12 / (2 / 3)`.
+same issue; for example $12 / 2 / 3$, i.e., $(12 / 2) / 3$ vs. $12 / (2 / 3)$.
 
-Consider the parse tree for the arithmetic expression `x + y + z`:
+Consider the parse tree for the arithmetic expression $x + y + z$:
 
-![arithmetic-expression-unambiguous-grammar-associativity-example04.png](../images/arithmetic-expression-unambiguous-grammar-associativity-example04.png)
+![Parse tree for $x + y + z$.](./images/arithmetic-expression-unambiguous-grammar-associativity-example04.png)
 
 The parse tree shows the left addition operator lower than the right addition
 operator. This is the correct order if addition is meant to be *left associative*,
 which is typical. In most cases, the associativity of addition in a computer is
 irrelevant. In mathematics, addition is associative, which means that left and
 right associative orders of evaluation mean the same thing, i.e., 
-`(x + y) + z = x + (y + z)`. Floating-point addition in a computer, however, is
+$(x + y) + z = x + (y + z)$. Floating-point addition in a computer, however, is
 not necessarily associative. Subtraction and division are not associative,
 whether in mathematics or in a computer. Therefore, correct associativity may be
 essential for an expression that contains either of them.
@@ -452,10 +477,10 @@ essential for an expression that contains either of them.
   rules of the grammar causes it to make both addition and multiplication left
   associative:
 
-  ```bnf
-  <expr> -> <expr> <add_op> <term> | ...
-  <term> -> <term> <mult_op> <factor> | ...
-  ```
+  \begin{grammar}
+  <expr> $\rightarrow$ <expr> <add_op> <term> | $\ldots$
+  <term> $\rightarrow$ <term> <mult_op> <factor> $\ldots$
+  \end{grammar}
 
   Unfortunately, left recursion disallows the use of some important syntax
   analysis algorithms. When one of these algorithms is to be used, the grammar
@@ -469,14 +494,15 @@ essential for an expression that contains either of them.
   recursion specifies right associativity.
 
   In most languages that provide it, the exponentiation operator is right
-  associative, e.g., `2 ** 3 ** 2` means `2 ** (3 ** 2)` rather than `(2 ** 3)
-  ** 2`. A rule such as the following could be used to describe
+  associative, e.g., $2 ** 3 ** 2$ means $2 ** (3 ** 2)$ rather than $(2 ** 3)
+  ** 2$. A rule such as the following could be used to describe
   exponentiation:
 
-  ```bnf
-  <factor> -> <expr> ** <factor> | <exp>
-  <expr> -> ( <expr> ) | <id>
-  ```
+  \begin{grammar}
+  <factor> $\rightarrow$ <expr> ** <factor> | <exp>
+
+  <expr> $\rightarrow$ ( <expr> ) | <id>
+  \end{grammar}
 
 ### Extended BNF (EBNF)
 
@@ -491,49 +517,49 @@ extensions included in the various versions of EBNF are:
 
   For example, a C if-else statement can be described as
 
-```bnf
-<if_stmt> -> if ( <expr> ) <stmt> [else <stmt>]
-```
+  \begin{grammar}
+  <if_stmt> $\rightarrow$ if ( <expr> ) <stmt> [else <stmt>]
+  \end{grammar}
 
   which without the use of the brackets, the syntactic description of this
   statement would require the following two rules:
 
-```bnf
-<if_stmt> -> if ( <expr> ) <stmt>
-          | if ( <expr> ) <stmt> else <stmt>
-```
+  \begin{grammar}
+  <if_stmt> $\rightarrow$ if ( <expr> ) <stmt>
+  \alt if ( <expr> ) <stmt> else <stmt>
+  \end{grammar}
 
-* Second extension uses braces (`{}`) in a RHS to indicate that the enclosed
+* Second extension uses braces ($\{\}$) in a RHS to indicate that the enclosed
   part can be repeated indefinitely or left out altogether. In other words, the
   enclosed part can be repeated part can have zero or more occurrences.
 
   For example, a list of identifiers separated by comma:
 
-```bnf
-<id_list> -> <id> {, <id>}
-```
+  \begin{grammar}
+  <id_list> $\rightarrow$ <id> \{, <id>\}
+  \end{grammar}
 
   Its BNF equivalent is:
 
-```bnf
-<id_list> -> <id> | <id>, <id_list>
-```
+  \begin{grammar}
+  <id_list> $\rightarrow$ <id> | <id>, <id_list>
+  \end{grammar}
 
 * Third extension deals with multiple-choice options. When a single element must
   be chosen from a group, the options are placed in parentheses and separated by
-  the OR operator, `|`. For example,
+  the OR operator, $|$. For example,
 
-```bnf
-<term> -> <term> (* | / | %) <factor>
-```
+  \begin{grammar}
+  <term> $\rightarrow$ <term> (* | / | \%) <factor>
+  \end{grammar}
 
   requires the following rules in BNF:
 
-```bnf
-<term> -> <term> * <factor>
-        | <term> / <factor>
-        | <term> % <factor>
-```
+  \begin{grammar}
+  <term> $\rightarrow$ <term> * <factor>
+  \alt <term> / <factor>
+  \alt <term> \% <factor>
+  \end{grammar}
 
 The brackets, braces, and parentheses in the EBNF extensions are **metasymbols**,
 which means they are notational tools and not terminal symbols in the syntactic
